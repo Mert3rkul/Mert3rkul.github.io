@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>1. Yıldönümümüz Kutlu Olsun Sevgilim, Her Anımız Bir Masal</title>
+  <!-- Google Fonts: Şık ve dokunaklı bir font -->
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+  <style>
+    /* Genel stil ayarları */
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow-x: hidden;
+      font-family: Arial, sans-serif;
+      background: #fcefee;
+    }
+    /* Kilit Ekranı */
+    #password-panel {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('fiyonk-bg.jpg') no-repeat center center;
+      background-size: cover;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      color: #fff;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
+      font-family: 'Pacifico', cursive;
+      padding: 20px;
+      box-sizing: border-box;
+      text-align: center;
+    }
+    #password-panel p {
+      font-size: 26px;
+      margin: 10px 0;
+    }
+    #password-panel input {
+      padding: 12px;
+      font-size: 18px;
+      border: 2px solid #fff;
+      border-radius: 8px;
+      background: rgba(255,255,255,0.8);
+      color: #333;
+      margin-top: 10px;
+    }
+    #password-panel button {
+      padding: 12px 25px;
+      font-size: 18px;
+      margin-top: 15px;
+      border: none;
+      border-radius: 8px;
+      background-color: #ff99cc;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    #password-panel button:hover {
+      background-color: #ff80b3;
+    }
+    /* Giriş metnine dekoratif emojiler ekledik */
+    #password-panel .decor {
+      margin-top: 15px;
+      font-size: 28px;
+    }
+    #error-msg {
+      color: #ffeb3b;
+      margin-top: 10px;
+      font-size: 18px;
+    }
+    /* Ana İçerik */
+    #content {
+      display: none;
+      min-height: 100%;
+      padding: 20px;
+      background: url('arka-plan.jpg') no-repeat center center;
+      background-size: cover;
+      position: relative;
+    }
+    /* Başlık (1. Yıldönümü mesajı) */
+    header {
+      text-align: center;
+      padding: 20px;
+      font-size: 30px;
+      color: #d63384;
+      text-shadow: 1px 1px 2px #fff;
+      font-family: 'Pacifico', cursive;
+    }
+    /* Beraber Geçirdiğimiz Zaman Sayaçı */
+    #countdown-container {
+      text-align: center;
+      margin: 10px auto 20px auto;
+      font-size: 22px;
+      color: #555;
+      background: rgba(255,255,255,0.8);
+      padding: 15px;
+      border-radius: 8px;
+      max-width: 95%;
+    }
+    #countdown {
+      font-weight: bold;
+      color: #d63384;
+      font-size: 24px;
+    }
+    /* Müzik Oynatıcısı */
+    .audio-player {
+      text-align: center;
+      margin: 20px;
+    }
+    #music-toggle, #prev-track, #next-track {
+      padding: 10px 20px;
+      font-size: 18px;
+      border: none;
+      border-radius: 8px;
+      background-color: #ff99cc;
+      color: #fff;
+      cursor: pointer;
+      margin: 5px;
+      transition: background 0.3s ease;
+    }
+    #music-toggle:hover, #prev-track:hover, #next-track:hover {
+      background-color: #ff80b3;
+    }
+    /* Slider Container */
+    #slider-container {
+      position: relative;
+      max-width: 90%;
+      margin: 0 auto;
+      text-align: center;
+    }
+    #slider-image {
+      width: 100%;
+      max-height: 80vh;
+      object-fit: contain;
+      border: 5px solid #fff;
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+      border-radius: 10px;
+    }
+    /* Slider Navigasyon Okları */
+    .slider-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 40px;
+      color: #fff;
+      background: rgba(0,0,0,0.3);
+      border: none;
+      cursor: pointer;
+      padding: 10px;
+      border-radius: 50%;
+    }
+    #prev-arrow {
+      left: 10px;
+    }
+    #next-arrow {
+      right: 10px;
+    }
+    /* Slider Navigasyon Butonları (Anı1 - Anı24) */
+    #slider-nav {
+      text-align: center;
+      margin-top: 15px;
+    }
+    #slider-nav button {
+      padding: 8px 12px;
+      margin: 3px;
+      border: none;
+      border-radius: 5px;
+      background-color: #ff99cc;
+      color: #fff;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    #slider-nav button:hover, #slider-nav button.active {
+      background-color: #ff80b3;
+    }
+    /* Fotoğraf altındaki romantik metinler – okunabilir boyutta */
+    .caption {
+      padding: 12px;
+      font-size: 22px;
+      color: #d63384;
+      background: rgba(255,255,255,0.85);
+      border-bottom-left-radius: 10px;
+      border-bottom-right-radius: 10px;
+      margin-top: -5px;
+    }
+    /* Animasyon Nesneleri: Uçuşan Emojiler (Beyaz kalp, fiyonk ve çiçek) */
+    .floating {
+      position: fixed;
+      top: -50px;
+      z-index: 500;
+      opacity: 0.8;
+      animation: float 10s linear infinite;
+    }
+    .delay-1 { animation-delay: 2s; }
+    .delay-2 { animation-delay: 4s; }
+    .delay-3 { animation-delay: 6s; }
+    @keyframes float {
+      0%   { transform: translateY(0) translateX(0); }
+      50%  { transform: translateY(80vh) translateX(20vw); }
+      100% { transform: translateY(0) translateX(0); }
+    }
+  </style>
+</head>
+<body>
+  <!-- Kilit Ekranı -->
+  <div id="password-panel">
+    <!-- Giriş metnine dekoratif emojiler eklenmiş -->
+    <p>Parolamızı gir minnoşum 🎀🤍🎀</p>
+    <input type="password" id="password-input" placeholder="Parola">
+    <button onclick="checkPassword()">Giriş Yap</button>
+    <div class="decor">"Kalbim seninle ilk atışını buldu; senin sevginle her an yeniden doğuyor."</div>
+    <div id="error-msg"></div>
+  </div>
+
+  <!-- Ana İçerik -->
+  <div id="content">
+    <!-- Başlık: 1. Yıldönümü Mesajı -->
+    <header>1. Yıldönümümüz Kutlu Olsun Sevgilim, Her Anımız Bir Masal</header>
+    
+    <!-- Beraber Geçirdiğimiz Zaman Sayaçı -->
+    <div id="countdown-container">
+      <p>14 Nisan 2024’ten beri geçen her saniye, aşkımıza yeni bir anlam katıyor:</p>
+      <div id="countdown">Yükleniyor...</div>
+    </div>
+    
+    <!-- Müzik Oynatıcısı: Aç/Kapat + Önceki/Sonraki Parça -->
+    <div class="audio-player">
+      <audio id="music-player" loop>
+        <source id="music-source" src="muzik1.mp3" type="audio/mpeg">
+        Tarayıcınız audio elementini desteklemiyor.
+      </audio>
+      <br>
+      <button id="music-toggle" onclick="toggleMusic()">MÜZİK AÇ/KAPAT</button>
+      <button id="prev-track" onclick="prevTrack()">Önceki Müzik</button>
+      <button id="next-track" onclick="nextTrack()">Sonraki Müzik</button>
+    </div>
+
+    <!-- Slider: Büyük Boy Fotoğraflar & Romantik Metin -->
+    <div id="slider-container">
+      <img id="slider-image" src="foto1.jpg" alt="Fotoğraf">
+      <button id="prev-arrow" class="slider-arrow" onclick="prevImage()">&#10094;</button>
+      <button id="next-arrow" class="slider-arrow" onclick="nextImage()">&#10095;</button>
+      <!-- Fotoğraf altındaki romantik metin -->
+      <div id="caption" class="caption">
+        "Kalbimdeki en güzel şiir sensin; her anın, her bakışın ruhuma işliyor."
+      </div>
+    </div>
+
+    <!-- Slider Navigasyon Butonları (Anı1 - Anı24) -->
+    <div id="slider-nav">
+      <script>
+        for (let i = 1; i <= 24; i++) {
+          document.write('<button onclick="showImage(' + (i - 1) + ')" id="nav-' + (i - 1) + '">Anı' + i + '</button>');
+        }
+      </script>
+    </div>
+  </div>
+
+  <!-- Animasyon Nesneleri: Uçuşan Emojiler -->
+  <!-- Beyaz kalpler -->
+  <div class="floating delay-1" style="left:10%; font-size: 30px; color: white;">&#10084;</div>
+  <div class="floating delay-2" style="left:40%; font-size: 25px; color: white;">&#10084;</div>
+  <div class="floating delay-3" style="left:70%; font-size: 35px; color: white;">&#10084;</div>
+  <!-- Fiyonk ve çiçek emojileri (🎀 ve 🌸) -->
+  <div class="floating delay-1" style="left:20%; font-size: 30px;">🎀</div>
+  <div class="floating delay-2" style="left:60%; font-size: 30px;">🌸</div>
+  <div class="floating delay-3" style="left:80%; font-size: 30px;">🎀</div>
+
+  <script>
+    // Kilit Ekranı: Parola kontrolü (Doğru parola: 142404)
+    function checkPassword() {
+      var input = document.getElementById("password-input").value;
+      var errorMsg = document.getElementById("error-msg");
+      if (input === "142404") {
+        document.getElementById("password-panel").style.display = "none";
+        document.getElementById("content").style.display = "block";
+      } else {
+        errorMsg.textContent = "Hatalı parola! Lütfen tekrar deneyin.";
+      }
+    }
+    
+    // Müzik Oynatıcısı: Aç/Kapat Fonksiyonu
+    function toggleMusic() {
+      var music = document.getElementById("music-player");
+      var btn = document.getElementById("music-toggle");
+      if (music.paused) {
+        music.play();
+        btn.innerText = "MÜZİK KAPAT";
+      } else {
+        music.pause();
+        btn.innerText = "MÜZİK AÇ/KAPAT";
+      }
+    }
+    
+    // Müzik Parçaları için
+    var tracks = ["muzik1.mp3", "muzik2.mp3", "muzik3.mp3", "muzik4.mp3"];
+    var currentMusicIndex = 0;
+    
+    function nextTrack() {
+      currentMusicIndex = (currentMusicIndex + 1) % tracks.length;
+      changeTrack();
+    }
+    
+    function prevTrack() {
+      currentMusicIndex = (currentMusicIndex - 1 + tracks.length) % tracks.length;
+      changeTrack();
+    }
+    
+    function changeTrack() {
+      var music = document.getElementById("music-player");
+      var source = document.getElementById("music-source");
+      source.src = tracks[currentMusicIndex];
+      music.load();
+      music.play();
+      document.getElementById("music-toggle").innerText = "MÜZİK AÇ ";
+    }
+    
+    // Beraber Geçirdiğimiz Zaman: 14 Nisan 2024'ten itibaren geçen süre
+    var startTime = new Date("April 14, 2024 00:00:00").getTime();
+    setInterval(function() {
+      var now = new Date().getTime();
+      var elapsed = now - startTime;
+      var days = Math.floor(elapsed / (1000 * 60 * 60 * 24));
+      var hours = Math.floor((elapsed % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      var minutes = Math.floor((elapsed % (1000 * 60 * 60)) / (1000 * 60));
+      var seconds = Math.floor((elapsed % (1000 * 60)) / 1000);
+      document.getElementById("countdown").innerHTML = days + " Gün " + hours + " Saat " + minutes + " Dakika " + seconds + " Saniye";
+    }, 1000);
+    
+    // Slider İşlevleri
+    var currentIndex = 0;
+    var totalImages = 24;
+    var sliderImage = document.getElementById("slider-image");
+    var captionText = document.getElementById("caption");
+    
+    // Romantik metin dizisi (24 adet). Sonuncusu, özel metin.
+    var captions = [
+      "Kalbimdeki en güzel şiir sensin; her anın, her bakışın ruhuma işliyor.",
+      "Aşkımız, yıldızlarla süslü sonsuz bir gecedir; seninle her an bir masal.",
+      "Gözlerin bir şiir, gülüşün ise en tatlı melodi; kalbimde saklı bir hazine.",
+      "Her dokunuşun, ruhuma işleyen sıcak bir şiir gibi; aşkla örülü anılarımız var.",
+      "Seninle geçirdiğim her saniye, ömrümün en kıymetli şiiri oldu.",
+      "Ruhumun derinliklerinde yankılanan bir aşk şarkısı gibisin; seninle hayat bambaşka.",
+      "Her bakışında kaybolmak, en güzel düşlerimden biri; aşkımız ölümsüz.",
+      "Seninle her an yeniden doğan umut, kalbimde atıyor; seni sevmek bir mucize.",
+      "Gecenin en parlak yıldızı, en tatlı rüyamsın; her anımda sen varsın.",
+      "Sözlerin kalbimde bir şiir gibi; seninle olmak tarifsiz bir his.",
+      "Aşkın, ruhuma işleyen en ince mısra; kalbim seninle ritmini buldu.",
+      "Seninle geçirdiğim her dakika, ömrümün en güzel şiirine dönüştü.",
+      "Gönlümde açan en güzel çiçek, en renkli rüya sensin; aşkımız efsaneleşiyor.",
+      "Kalbimin en derin yerinde saklı, sonsuz bir aşkın hikayesi; seninle tamamlanıyor.",
+      "Her adımda aşkın izleri, her nefeste senin sevgin var; ömrüm sana adandı.",
+      "Seninle hayat bir şiir, her dizesi tutkuyla yazılmış; aşkımız sonsuzlukta.",
+      "Gözlerinin derinliğinde kaybolmak, kalbimin en güzel şiirini okumak gibi.",
+      "Aşkımız bir masal, her anı büyülü; sen benim en güzel öykümsün.",
+      "Ruhuma işleyen en tatlı söz, kalbimin en derin sızısı; seninle her şey anlam kazanıyor.",
+      "Birlikte yazdığımız her satır, ömrümün en anlamlı şiiri; sonsuza kadar seninim.",
+      "Seninle her an, kalbimde yeni bir mısra; aşkımız ölümsüz bir destan.",
+      "Gözlerin, gecemin en parlak yıldızı; her anımda seninle ışıldıyor.",
+      "Kalbimde yankılanan en güzel ezgi, senin sevginin sonsuz melodisi.",
+      // Son (24.) fotoğraf için özel metin:
+      "Zorluklardan yıldızlara benim güzel sevgilim,<br>birlikte güldüğümüz, birlikte ağladığımız,<br>her anı değerli kıldığın için sonsuz teşekkür ederim.<br>Gözlerinin içi gibi aydınlık nice senelere birlikte yürüyelim.<br>Benim en kıymetlim, SENİİİ ÇOKKK SEVİYORUMMM BENİM HAYATIMIN ANLAMI , MELEĞİM , AY YÜZLÜM , GÜZELLİĞİM🎀🤍"
+    ];
+    
+    function showImage(index) {
+      if (index < 0 || index >= totalImages) return;
+      currentIndex = index;
+      sliderImage.src = "foto" + (index + 1) + ".jpg";
+      captionText.innerHTML = captions[index] || "";
+      updateNavButtons();
+    }
+    
+    function prevImage() {
+      var newIndex = currentIndex - 1;
+      if (newIndex < 0) newIndex = totalImages - 1;
+      showImage(newIndex);
+    }
+    
+    function nextImage() {
+      var newIndex = currentIndex + 1;
+      if (newIndex >= totalImages) newIndex = 0;
+      showImage(newIndex);
+    }
+    
+    function updateNavButtons() {
+      for (let i = 0; i < totalImages; i++) {
+        var btn = document.getElementById("nav-" + i);
+        if (i === currentIndex) {
+          btn.classList.add("active");
+        } else {
+          btn.classList.remove("active");
+        }
+      }
+    }
+    
+    // Slider başlangıçta ilk fotoğrafı gösterir.
+    showImage(0);
+  </script>
+</body>
+</html>
